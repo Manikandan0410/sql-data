@@ -1,0 +1,106 @@
+users
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  username varchar(50) NOT NULL
+);
+INSERT into users
+VALUES (1,'manikandan'),(2,'shaluuu'),(3,'chandru'),(4,'amutha'),(5,'sowmiya'),(6,'hari'),(7,'maha');
+
+codekata
+CREATE TABLE codekata (
+   user_id INTEGER PRIMARY KEY,
+   no_of_problems_solved INTEGER
+);
+INSERT into codekata
+VALUES (1,20),(2,29),(3,22),(4,25),(5,26),(6,30),(7,27);
+
+attendance
+CREATE TABLE attendance (
+  user_id INTEGER PRIMARY KEY,
+  attendance INTEGER
+);
+INSERT into  attendance
+VALUES (1,45),(2,43),(3,45),(4,45),(5,40),(6,41),(7,243);
+
+topics
+CREATE TABLE topics (
+  topics varchar(50),
+  user_id INTEGER
+);
+INSERT into  topics
+VALUES ('JAVASCRIPT',1),('JAVASCRIPT',2),('JAVASCRIPT',3),
+('css',4),('html',5),('Functions',6),('REACT',7),('REACT',4),('JAVASCRIPT',4),('html',5),('css',1);
+
+tasks
+CREATE TABLE tasks (
+  tasks varchar(50),
+  user_id INTEGER
+);
+INSERT into  tasks
+VALUES ('todolist',1),('todolist',5),('dashboard',3),
+('sql',4),('dashboard',5),('sql',6),('REACT',7),('mongodb',4),('movielist',4),('nodejs',5),('movielist',1);
+
+
+company_drives
+CREATE TABLE company_drives (
+  company_drives varchar(50),
+  user_id INTEGER
+);
+INSERT into  company_drives
+VALUES ('guvi',1),('guvi',2),('freshworks',3),
+('TCS',4),('google',5),('google',6),('paytm',7),('paypal',4),('paytm',4),('TCS',5),('freshworks',1),('guvi',7),('CTS',1),('google',3);
+
+mentors
+CREATE TABLE mentors (
+  mentors varchar(50),
+  user_id INTEGER
+);
+INSERT into  mentors
+VALUES ('lavish',1),('lavish',3),('lavish',7),('lavish',6),('ragav',5),('ragav',4),('ragav',2);
+
+students_activated_courses
+CREATE TABLE students_activated_courses (
+  courses varchar(50),
+  user_id INTEGER
+);
+INSERT into students_activated_courses
+VALUES ('DATA_SCIENCE',1),('MERN',3),('MERN',7),('MEAN',6),('CYBER_SECURITY',5),('CYBER_SECURITY',4),('DATA_SCIENCE',2);
+
+courses
+CREATE TABLE courses (
+  courses varchar(50),
+  id INTEGER PRIMARY KEY
+);
+INSERT into courses
+VALUES ('DATA_SCIENCE',1),('MERN',2),('MEAN',3),('CYBER_SECURITY',4),('MACHINE-LEARNING',5);
+
+3.get number problems solved in codekata by combining the users
+
+SELECT SUM(codekata.no_of_problems_solved) as total_problems_solved 
+from codekata 
+
+4.display the no of company drives attended by a user
+
+SELECT username , count(company_drives)FROM users
+inner join company_drives
+where users.id=company_drives.user_id
+group by users.username
+
+5.combine and display students_activated_courses and courses for a specific user groping them based on the course
+
+SELECT * FROM courses
+LEFT JOIN (SELECT username,courses FROM users 
+INNER JOIN students_activated_courses
+ON users.id = students_activated_courses.user_id) as userCourse
+ON courses.courses = userCourse.courses
+
+6. list all the mentors
+
+SELECT DISTINCT mentors mentors;
+
+7. list the number of students that are assigned for a mentor 
+
+SELECT mentors,COUNT(userName) as no_of_students from users
+INNER JOIN mentors
+ON users.id = mentors.user_id
+GROUP BY mentors
